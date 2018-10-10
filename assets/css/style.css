@@ -39,8 +39,6 @@ body {
     flex-direction: column;
 
     align-items: center;
-
-    bottom: 0;
 }
 
 .prestige-button > input {

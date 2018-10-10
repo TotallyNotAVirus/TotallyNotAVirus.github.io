@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>Infinity Coins</title>
     <link href="assets/css/style.css" rel="stylesheet"/>
   </head>
   <body>
@@ -8,6 +9,15 @@
         <div class="left block">
 	  ${{ notation(app.view.game.money, types.notation.Binary, 2) }}
           <upgrade-view v-bind:view="app.view.upgrades" v-bind:app="app"></upgrade-view>
+	</div>
+        <div class="center block">
+	  <block-chain v-bind:app="app" v-bind:block-chain="app.view.blockChain" v-bind:font-size="config.fontSize">
+	  </block-chain>
+          <span>
+	    Your computing power equals to {{ aboutPower.amount }} {{ aboutPower.object }}
+	  </span>
+	</div>
+        <div class="right block">
 	  <div class="prestige-button">
 	    <input type="button"
 		   v-on:click="app.view.game.emit('prestigeLvlOne')"
@@ -18,15 +28,7 @@
 		   v-bind:value="prestigeLvlTwoStatus"/>
 
 	  </div>
-	</div>
-        <div class="center block">
-	  <block-chain v-bind:app="app" v-bind:block-chain="app.view.blockChain" v-bind:font-size="config.fontSize">
-	  </block-chain>
-          <span>
-	    Your computing power equals to {{ aboutPower.amount }} {{ aboutPower.object }}
-	  </span>
-	</div>
-        <div class="right block">
+
 	  coins {{ notation(app.view.game.coins, types.notation.Binary) }}
 	  <coin-view v-bind:view="app.view.prestige"></coin-view>
 	</div>
