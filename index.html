@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <link href="assets/css/style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <div class="container">
+        <div class="left block">
+	  ${{ notation(app.view.game.money, types.notation.Binary, 2) }}
+          <upgrade-view v-bind:view="app.view.upgrades" v-bind:app="app"></upgrade-view>
+	  <div class="prestige-button">
+	    <input type="button"
+		   v-on:click="app.view.game.emit('prestigeLvlOne')"
+		   v-bind:value="prestigeLvlOneStatus"/>
+
+	    <input type="button"
+		   v-on:click="app.view.game.emit('prestigeLvlTwo')"
+		   v-bind:value="prestigeLvlTwoStatus"/>
+
+	  </div>
+	</div>
+        <div class="center block">
+	  <block-chain v-bind:app="app" v-bind:block-chain="app.view.blockChain" v-bind:font-size="config.fontSize">
+	  </block-chain>
+          <span>
+	    Your computing power equals to {{ aboutPower.amount }} {{ aboutPower.object }}
+	  </span>
+	</div>
+        <div class="right block">
+	  coins {{ notation(app.view.game.coins, types.notation.Binary) }}
+	  <coin-view v-bind:view="app.view.prestige"></coin-view>
+	</div>
+      </div>
+    </div>
+    <script src="dist/output.js">
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127221246-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-127221246-1');
+    </script>
+  </body>
+</html>
