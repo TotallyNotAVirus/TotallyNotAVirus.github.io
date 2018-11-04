@@ -2,38 +2,139 @@
   <head>
     <title>Infinity Coins</title>
     <link href="assets/css/style.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF8">
   </head>
   <body>
     <div id="app" v-cloak>
-      <div class="container">
-        <div class="left block">
-	  ${{ notation(app.view.game.money, types.notation.Binary, 2) }}
-          <upgrade-view v-bind:view="app.view.upgrades" v-bind:app="app"></upgrade-view>
-	</div>
-        <div class="center block">
-	  <block-chain v-bind:app="app" v-bind:block-chain="app.view.blockChain" v-bind:font-size="config.fontSize">
-	  </block-chain>
-          <span>
-	    Your computing power equals to {{ aboutPower.amount }} {{ aboutPower.object }}
-	  </span>
-	</div>
-        <div class="right block">
-	  <div class="prestige-button">
-	    <input type="button"
-		   v-on:click="app.view.game.emit('prestigeLvlOne')"
-		   v-bind:value="prestigeLvlOneStatus"/>
-
-	    <input type="button"
-		   v-on:click="app.view.game.emit('prestigeLvlTwo')"
-		   v-bind:value="prestigeLvlTwoStatus"/>
-
+      <div class="page" v-if="tab.game.isActive">
+	<div class="left">
+	  <div class="container">
+            <div class="placeholder"></div>
+            <div class="dollars">
+	      ${{ notation(app.view.state.values.currency.dollars, formats.notation.Binary, 2) }}
+	    </div>
+            <div class="dollars-income">
+	      ${{ notation(dollarIncome, formats.notation.Binary, 2) }}/s
+	    </div>
+	    <div class="placeholder"></div>
+            <upgrade-view v-bind:view="view"></upgrade-view>
 	  </div>
-
-	  coins {{ notation(app.view.game.coins, types.notation.Binary) }}
-	  <coin-view v-bind:view="app.view.prestige"></coin-view>
+	</div>
+	<div class="center block">
+          <div class="menu">
+            <div class="menu-item" v-on:click="switchTab('game')">Game</div>
+            <div class="menu-item" v-on:click="switchTab('settings')">Settings</div>
+	  </div>
+	  <div class="blockchain" v-if="tab.game.isActive">
+            <div class="status">
+              <table>
+		<tr>
+		  <td>Blocks:</td>
+		  <td v-bind:style="{ color: getCoinColor() }">{{ notation(view.blockChain.values.blockCount) }}</td>
+		  <td></td>
+		</tr>
+		<tr>
+		  <td>Coins:</td>
+		  <td>{{ notation(view.coinPrestige.values.coins) }}</td>
+		  <td></td>
+		</tr>
+		<tr>
+		  <td>Blockchain:</td>
+		  <td>{{ 0 }}</td>
+		  <td></td>
+		  <td>
+		  </td>
+		</tr>
+              </table>
+	    </div>
+	    <block-chain v-bind:view="view" v-bind:font-size="config.fontSize" v-bind:font-family="fontFamily">
+	    </block-chain>
+            <div class="power-status">
+	      Your computing power equals to {{ getAboutPower() }}
+	    </div>
+	  </div>
+          <div class="footer">
+	    Hotkeys: M to max $ upgrades, C to max coins upgrades
+	  </div>
+	</div>
+	<div class="right block">
+	  <div class="container">
+	    <div class="crypto-prestige" v-on:click="app.reset('prestigeL1')" :class="{ available: prestigeL1Status.isAvailable }">
+	      <tool-tip v-bind:pos="{ right: '80%', top: '0%' }" width="200px">
+		<template slot="face">
+                  <span class="title">
+		    {{ prestigeL1Status.title }}
+		  </span>
+		</template>
+		<template slot="tooltip">
+		  After unlocking cryptocurrency you need to compute some amount of blocks before it appears in hash.
+		  Each crypto stains hash numbers in its own color and multiplies money income from that number.
+		</template>
+	      </tool-tip>
+	    </div>
+	    <div class="crypto-prestige" v-on:click="app.reset('prestigeL3')" :class="{ available: prestigeL3Status.isAvailable }">
+	      <tool-tip v-bind:pos="{ right: '80%', top: '0%' }" width="200px">
+		<template slot="face">
+                  <span class="title">
+		    {{ prestigeL3Status.title }}
+		  </span>
+		</template>
+		<template slot="tooltip">
+		  You need to collect 6 Infinity Coins with lvl equal or greater than {{ prestigeL3Status.lvl }}.
+		  After prestige hash "difficulty" will be reduced by half.
+		</template>
+	      </tool-tip>
+	    </div>
+	    <coin-view v-bind:view="view"></coin-view>
+	  </div>
+	</div>
+      </div>
+      <div class="page" v-if="tab.settings.isActive">
+        <div class="left block"></div>
+	<div class="center block">
+          <div class="menu">
+            <div class="menu-item" v-on:click="switchTab('game')">Game</div>
+            <div class="menu-item" v-on:click="switchTab('settings')">Settings</div>
+	  </div>
+	  <div class="settings">
+            <div class="setting" v-on:click="importSave">Import</div>
+            <div class="setting" v-on:click="exportSave">Export</div>
+            <div class="setting" v-on:click="app.hardReset()">Hard Reset</div>
+            <!-- <div class="setting">Notation</div> -->
+            <div class="setting" v-on:click="app.save()">Save</div>
+            <div class="setting" v-on:click="switchFontFamily()">Font: {{ fontFamily }}</div>
+	  </div>
+	</div>
+        <div class="left block"></div>
+      </div>
+      <div class="pop-up-container"  v-if="popUp.export.isVisible" v-on:click="hide($event)">
+	<div class="pop-up" ref="pop-up-export">
+          <div class="text">
+	    {{ app.storage.getSave() }}
+	  </div>
+          <div class="footer">
+            <button v-on:click="hideAll()">Ok</button>
+	  </div>
+	</div>
+      </div>
+      <div class="pop-up-container"  v-if="popUp.import.isVisible" v-on:click="hide($event)">
+	<div class="pop-up" ref="pop-up-import">
+          <div class="content">
+            <textarea v-model:value="importData">
+            </textarea>
+            <button v-on:click="onImport">Import</button>
+	  </div>
+          <div class="footer">
+            <button v-on:click="hideAll()">Ok</button>
+	  </div>
 	</div>
       </div>
     </div>
+    <!--
+	<div class="info">
+	  <a target="_blank" href="/changelog.html" class="changelog">Changelog</a>
+	</div>
+    -->
     <script src="dist/output.js">
     </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
