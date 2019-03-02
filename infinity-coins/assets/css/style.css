@@ -1,0 +1,274 @@
+@font-face {
+  font-family: "Minecraft";
+  src: url("../tff/minecraft.ttf");
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("../tff/Montserrat-SemiBold.ttf");
+}
+* {
+  font-family: "Minecraft";
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+.page {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+}
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+#app {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 34.5%;
+  position: relative;
+}
+.left .dollars {
+  font-size: 24px;
+}
+.left .dollars-income {
+  font-size: 16px;
+  /* 16px */
+}
+.left .placeholder {
+  height: 10%;
+}
+.pop-up {
+  background: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 25%;
+  height: 25%;
+  position: relative;
+}
+.pop-up .content {
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  word-wrap: break-word;
+  overflow: auto;
+}
+.pop-up .text {
+  height: 80%;
+  width: 100%;
+  word-wrap: break-word;
+  overflow: auto;
+}
+.pop-up .footer {
+  display: flex;
+  height: 20%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.pop-up-container {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.settings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.settings .setting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  padding: 10px;
+  background: #00cc66;
+  margin: 10px;
+  border-radius: 5px;
+}
+.settings .setting:hover {
+  cursor: pointer;
+  background: #006633;
+}
+.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.menu .menu-item {
+  margin-left: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background: white;
+  font-size: 18px;
+}
+.menu .menu-item:hover {
+  background: #699;
+  cursor: pointer;
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  width: 30%;
+}
+.center .blockchain {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.center .blockchain .status {
+  width: 100%;
+  position: relative;
+}
+.center .blockchain .status > table {
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.center .blockchain .status > table tr td {
+  width: 25%;
+}
+.center .blockchain .status .btn {
+  text-align: center;
+  background: #ff9900;
+  border-radius: 5px;
+}
+.center .blockchain .power-status {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+.center .footer {
+  position: absolute;
+  bottom: 2em;
+  font-size: 12px;
+  text-align: center;
+}
+.right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 34.5%;
+  align-items: center;
+}
+.right .placeholder {
+  height: 10%;
+}
+.crypto-prestige {
+  font-size: 18px;
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  background: rgba(51, 204, 51, 0.5);
+  position: relative;
+}
+.crypto-prestige:hover {
+  background: #006699;
+  cursor: pointer;
+}
+.crypto-prestige.available {
+  background: rgba(51, 204, 51);
+}
+.crypto-prestige .title {
+  opacity: 0.5;
+}
+.crypto-prestige.available .title {
+  opacity: 1;
+}
+.crypto-prestige .tool-tip .tip {
+  font-size: 14px;
+}
+@media (max-width: 600px) {
+  #app {
+    flex-direction: column;
+  }
+  .the-coin {
+    font-size: 12px;
+  }
+  .left {
+    display: none;
+  }
+  .right {
+    display: none;
+  }
+  .left,
+  .center,
+  .right {
+    width: 100%;
+  }
+  .placeholder {
+    height: 0;
+  }
+  .center .menu {
+    flex-direction: column;
+    width: 100%;
+  }
+  .center .menu .menu-item {
+    padding: 0px;
+    margin: 2px;
+    width: 100%;
+    text-align: center;
+  }
+  .center .settings {
+    flex-direction: column;
+  }
+  .mobile-container .upgrade-view {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .mobile-status {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+  }
+  .container .coin-view {
+    width: 80%;
+  }
+  .container .coin-view .the-coin .cell {
+    padding: 5px;
+  }
+}
